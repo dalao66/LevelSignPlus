@@ -1,0 +1,5 @@
+warning:
+  moneyNotEnough: '抱歉,你的金币不足'
+  playerNotFound: '抱歉,没有找到该玩家'
+  addPointsEventCancelled: '添加等级点数的事件被取消'
+  upgradeMessage: '启动升级程序!'

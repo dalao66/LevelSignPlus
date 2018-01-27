@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 
 /**
@@ -34,9 +33,9 @@ public class PlayerCommand implements CommandExecutor {
         if (args.length == 1 && args[0].equals("list")) {
 
             String message = "";
-            Iterator<String> levels = plugin.getConfig().getConfigurationSection("setting.levels").getKeys(false).iterator();
+            Iterator<String> levels = plugin.getDefaultConfig().levelMap.keySet().iterator();
             while (levels.hasNext()) {
-                message += plugin.getLevelNick(levels.next());
+                message += plugin.getDefaultConfig().levelMap.get(levels.next());
                 if (levels.hasNext()) {
                     message += "&7->";
                 }
@@ -45,11 +44,11 @@ public class PlayerCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 2 && args[0].equals("move") && sender.isOp()) {
-            Player player = (Player) sender;
-            plugin.setPlayerLevel(player.getUniqueId(), args[1]);
-            return true;
-        }
+//        if (args.length == 2 && args[0].equals("move") && sender.isOp()) {
+//            Player player = (Player) sender;
+//            plugin.setPlayerLevel(player.getUniqueId(), args[1]);
+//            return true;
+//        }
 
         if (args.length == 3 && args[0].equals("add") && sender.isOp()) {
             Player player = Bukkit.getPlayer(args[1]);
@@ -58,7 +57,7 @@ public class PlayerCommand implements CommandExecutor {
                 return true;
             }
             try {
-                plugin.setPlayerPoint(player.getUniqueId(), Integer.parseInt(args[2]));
+               // plugin.setPlayerPoint(player.getUniqueId(), Integer.parseInt(args[2]));
             } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.RED + "[LEVEL]经验必须为一个大于0的整数!");
                 return true;
@@ -71,7 +70,7 @@ public class PlayerCommand implements CommandExecutor {
             Player player = (Player) sender;
             List<String> messages = plugin.getConfig().getStringList("setting.message");
             for (String msg : messages) {
-                msg = replace(player, msg);
+               // msg = replace(player, msg);
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             }
             return true;
@@ -85,7 +84,7 @@ public class PlayerCommand implements CommandExecutor {
             }
             List<String> messages = plugin.getConfig().getStringList("setting.message");
             for (String msg : messages) {
-                msg = replace(player, msg);
+              //  msg = replace(player, msg);
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             }
             return true;
@@ -104,14 +103,16 @@ public class PlayerCommand implements CommandExecutor {
         return true;
     }
 
-    public String replace(Player player, String msg) {
-        UUID uuid = player.getUniqueId();
-        msg = msg.replaceAll("%player%", player.getName()).replaceAll("%level%", plugin.getPlayerLevelNick(uuid))
-                .replaceAll("%point%", plugin.getPlayerPoint(uuid)).replaceAll("%maxPoint%", String.valueOf(plugin.getPlayerMaxPoint(uuid)))
-                .replaceAll("%maxHealth%", String.valueOf(plugin.getPlayerMaxHealth(uuid))).replaceAll("%resCount%", String.valueOf(plugin.getPlayerMaxResCount(uuid)))
-                .replaceAll("%resSize%", String.valueOf(plugin.getPlayerMaxResSize(uuid))).replaceAll("%killMob%", String.valueOf(plugin.getKillMob(player.getName())))
-                .replaceAll("%attack%", String.valueOf(plugin.getAttackPlus(player.getUniqueId())));
-        return msg;
-    }
+//    public String replace(Player player, String msg) {
+//        UUID uuid = player.getUniqueId();
+//        RecordConfig.LevelRecord record = plugin.getRecordConfig().getRecordByUUID(uuid);
+//        DefaultConfig.Level level = plugin.getDefaultConfig().getLevelByName(record.level);
+//        msg = msg.replaceAll("%player%", player.getName()).replaceAll("%level%", record.level)
+//                .replaceAll("%point%", record.point+"").replaceAll("%maxPoint%", String.valueOf(level.upgradePoints))
+//                .replaceAll("%maxHealth%", String.valueOf(plugin.getPlayerMaxHealth(uuid))).replaceAll("%resCount%", String.valueOf(plugin.getPlayerMaxResCount(uuid)))
+//                .replaceAll("%resSize%", String.valueOf(plugin.getPlayerMaxResSize(uuid))).replaceAll("%killMob%", String.valueOf(plugin.getKillMob(player.getName())))
+//                .replaceAll("%attack%", String.valueOf(plugin.getAttackPlus(player.getUniqueId())));
+//        return msg;
+//    }
 
 }

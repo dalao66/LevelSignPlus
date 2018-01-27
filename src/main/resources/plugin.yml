@@ -4,8 +4,12 @@ version: 3.1.5
 author: shell
 website: http://licrafter.com
 description: prefix level
-depend: [ProtocolLib,Residence,Vault]
+depend: [ProtocolLib,Residence,Vault,LicraftLib]
 commands:
   level:
     description: basic command
     usage: §c/level help
+permissions:
+  level.buy.free:
+    description: buy points free
+    default: false
