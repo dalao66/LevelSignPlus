@@ -21,6 +21,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,7 +43,8 @@ public class SignExtend extends JavaPlugin {
     private EconomyInterface economy;
     private PermissionsInterface permission;
 
-    private ConcurrentHashMap<String, OfflinePlayer> offlinePlayerList = new ConcurrentHashMap<String, OfflinePlayer>();
+    private ConcurrentHashMap<String, OfflinePlayer> offlinePlayerList = new ConcurrentHashMap<>();
+    private String[] langFiles = new String[]{"zh", "en"};
 
 
     @Override
@@ -54,14 +56,16 @@ public class SignExtend extends JavaPlugin {
         ptlManager = new PtlManager(this);
         ptlManager.onEnable();
         saveDefaultConfig();
+        saveDefaultLangFile();
         loadConfigFiles();
+        loadLangFile();
         levelManager = new LevelManager(this);
         playerManager = new PlayerManager(this);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new ResListener(this), this);
-        getServer().getPluginManager().registerEvents(new LevelListener(this),this);
-        getServer().getPluginCommand("level").setExecutor(new PlayerCommand(this));
+        getServer().getPluginManager().registerEvents(new LevelListener(this), this);
+        PluginAnnotations.COMMAND.load(this, new PlayerCommand(this));
 
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
@@ -77,6 +81,23 @@ public class SignExtend extends JavaPlugin {
         });
 
         initHolder();
+    }
+
+    private void saveDefaultLangFile() {
+        for (String lang : langFiles) {
+            File file = new File("languages" + File.separator + lang + ".yml");
+            if (!file.exists()) {
+                saveResource(file.getPath(), false);
+            }
+        }
+    }
+
+    private void loadLangFile() {
+        if (defaultConfig == null) {
+            return;
+        }
+        languageConfig = PluginAnnotations.CONFIG
+                .loadValues(this, "languages" + File.separator + defaultConfig.lang + ".yml", LanguageConfig.class);
     }
 
     public UUID getPlayerUUID(String playerName) {
@@ -246,8 +267,7 @@ public class SignExtend extends JavaPlugin {
         return defaultConfig;
     }
 
-    public LanguageConfig getLanguageConfig() {
-        // TODO: 2018/4/3 初始化
+    public LanguageConfig getLangConfig() {
         return languageConfig;
     }
 
@@ -287,13 +307,13 @@ public class SignExtend extends JavaPlugin {
 
     public void reload() {
         loadConfigFiles();
+        playerManager.reload();
     }
 
     private void loadConfigFiles() {
         defaultConfig = loadValues(DefaultConfig.class);
-        //recordConfig = loadValues(RecordConfig.class);
-       // mobConfig = loadValues(MobConfig.class);
-        //playerManager.reload();
+        recordConfig = loadValues(RecordConfig.class);
+        mobConfig = loadValues(MobConfig.class);
     }
 
     private <T> T loadValues(Class<T> tClass) {

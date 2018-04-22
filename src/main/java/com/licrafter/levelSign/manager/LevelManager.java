@@ -6,6 +6,7 @@ import com.licrafter.levelSign.config.Level;
 import com.licrafter.levelSign.events.PlayerAddPointsEvent;
 import com.licrafter.levelSign.events.PlayerUpgradeEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ public class LevelManager {
 
     public LevelManager(SignExtend plugin) {
         this.plugin = plugin;
-        languageConfig = plugin.getLanguageConfig();
+        languageConfig = plugin.getLangConfig();
     }
 
     public boolean addLevelPoints(Player player) {
@@ -46,11 +47,17 @@ public class LevelManager {
         boolean success = plugin.withDraw(offlinePlayer, addPointsEvent.getCost());
         if (success) {
             LevelPlayer levelPlayer = plugin.getPlayerManager().getLevelPlayer(player);
-            levelPlayer.getRecord().addPoint(points.amount);
+            levelPlayer.addPoints(points.amount);
+            if (levelPlayer.getLevel().equals(levelPlayer.getNextLevel())){
+                //已经到达了最高等级
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',languageConfig.alreadyHighest));
+                return true;
+            }
             if (levelPlayer.canLevelUp()) {
+                sender.sendMessage(languageConfig.upgradeMessage);
                 PlayerUpgradeEvent upgradeEvent = new PlayerUpgradeEvent(offlinePlayer, levelPlayer.getLevel(), levelPlayer.getNextLevel());
                 Bukkit.getPluginManager().callEvent(upgradeEvent);
-                sender.sendMessage(languageConfig.upgradeMessage);
+                levelPlayer.levelUp();
             }
             return true;
         } else {

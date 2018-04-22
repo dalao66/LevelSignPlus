@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Github: https://github.com/shellljx
  */
 public class PlayerManager {
-    //<playerName,LevelPlayer>
+    //<UUID,LevelPlayer>
     private ConcurrentHashMap<UUID, LevelPlayer> playerMap = new ConcurrentHashMap<>();
     private SignExtend plugin;
 

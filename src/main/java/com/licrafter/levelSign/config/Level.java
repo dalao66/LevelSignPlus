@@ -3,6 +3,7 @@ package com.licrafter.levelSign.config;
 import com.licraft.apt.config.ConfigSection;
 import com.licraft.apt.config.ConfigValue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,26 +11,40 @@ import java.util.List;
  * <p>
  * Github: https://github.com/shellljx
  */
-public class Level {
+public class Level implements Comparable<Level> {
 
     @ConfigValue(path = "nick")
     public String nick;
     @ConfigValue(path = "health")
     public int health;
-    @ConfigValue(path = "resGroup")
-    public String resGroup;
     @ConfigValue(path = "upgradePoints")
     public int upgradePoints;
     @ConfigValue(path = "attack")
     public int attack;
-    @ConfigValue(path = "nextLevel")
-    public String nextLevel;
+    @ConfigValue(path = "priority")
+    public int priority;
     @ConfigValue(path = "cmds")
-    public List<String> cmdList;
+    public List<String> cmdList = new ArrayList<>();
     @ConfigValue(path = "permissions")
-    public List<String> permList;
+    public List<String> permList = new ArrayList<>();
     @ConfigSection(path = "levelPoints")
     public Points points;
+
+    @Override
+    public int compareTo(Level o) {
+        return priority - o.priority;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof Level) {
+            return this.priority == ((Level) obj).priority;
+        }
+        return false;
+    }
 
     public static class Points {
         @ConfigValue(path = "price")

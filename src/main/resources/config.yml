@@ -1,16 +1,17 @@
 #攻击力加成不回累加,是在玩家基础攻击力上增加
 setting:
+  #语言
+  language: zh
   #当升级的时候是否全服广播
   broadCast: true
   #是否开启等级血量加成
   enableHealth: true
-  #是否开启等级领地加成
-  res:
-    enable: true
-    enabledWorlds:
-    - world
   #是否开启等级攻击加层
   enableAttack: true
+  #等级权限默认添加到哪个世界的权限组
+  #如果在 permissions 中添加了权限组,将覆盖该默认设置
+  defaultWorlds:
+  - world
   #查看自己的等级信息时候显示的文字
   #可用的变量有:%player%,%level%,%point%,%maxPoint%,%resCount%,%resSize%,'%maxHealth%,%killMob%,%attack%'
   levelProfile:
@@ -34,13 +35,12 @@ setting:
       nick: '&ahobo'
       #最大血量
       health: 10
-      resGroup: default
       #升级上限点数
       upgradePoints: 50
       #攻击力增加1点
       attack: 1
-      #下一个等级名字
-      nextLevel: 'nextLevel'
+      #优先级,优先级越小,代表等级越低,最小为0
+      priority: 0
       #成为该等级以后自动执行的命令
       cmds:
       #成为该等级后拥有的权限
@@ -55,18 +55,17 @@ setting:
       nick: '&adenizen'
       #最大血量
       health: 10
-      resGroup: default
       #升级上限点数
       upgradePoints: 200
       #攻击力增加1点
       attack: 1
-      #下一个等级名字
-      nextLevel:
+      #优先级
+      priority: 1
       #成为该等级以后自动执行的命令
       cmds:
       #成为该等级后拥有的权限
       permissions:
-      - 'essentials.balancetop,world,sc'
+      - 'essentials.balancetop,world,zy,sc'
       levelSign:
         #每个point的加个
         price: 20.0

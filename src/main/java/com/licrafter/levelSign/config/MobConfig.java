@@ -5,6 +5,7 @@ import com.licraft.apt.config.ConfigSection;
 import com.licraft.apt.config.ConfigValue;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
 public class MobConfig {
 
     @ConfigSection(path = "mobs")
-    public Map<String, MobRecord> mobRecordMap;
+    public Map<String, MobRecord> mobRecordMap = new HashMap<>();
 
     public static class MobRecord implements Comparable<MobRecord> {
         @ConfigValue(path = "name")

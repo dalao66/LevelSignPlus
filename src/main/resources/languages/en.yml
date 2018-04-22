@@ -1,9 +1,9 @@
 warning:
-  moneyNotEnough: '抱歉,你的金币不足'
-  playerNotFound: '抱歉,没有找到该玩家'
-  addPointsEventCancelled: '添加等级点数的事件被取消'
+  moneyNotEnough: 'en抱歉,你的金币不足'
+  playerNotFound: 'en抱歉,没有找到该玩家'
+  addPointsEventCancelled: 'en添加等级点数的事件被取消'
 level:
-  upgradeMessage: '启动升级程序!'
+  upgradeMessage: 'en启动升级程序!'
   addedPermission: '为玩家: %player% 成功添加权限: %perm% !'
   addedPoints: '成功购买 %amount% 声望点数,花费 %cost% 节操'
   levelUpSuccess: '恭喜玩家 %player% 成功升级到 %level% !'

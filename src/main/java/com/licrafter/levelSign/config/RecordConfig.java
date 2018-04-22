@@ -4,6 +4,7 @@ import com.licraft.apt.config.ConfigBean;
 import com.licraft.apt.config.ConfigSection;
 import com.licraft.apt.config.ConfigValue;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class RecordConfig {
 
     @ConfigSection(path = "levels")
-    public Map<String, LevelRecord> recordMap;
+    public Map<String, LevelRecord> recordMap = new HashMap<>();
 
     public static class LevelRecord {
         @ConfigValue(path = "player")

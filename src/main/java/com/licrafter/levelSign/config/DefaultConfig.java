@@ -4,6 +4,8 @@ import com.licraft.apt.config.ConfigBean;
 import com.licraft.apt.config.ConfigSection;
 import com.licraft.apt.config.ConfigValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -14,29 +16,30 @@ import java.util.Map;
  */
 @ConfigBean
 public class DefaultConfig {
+    @ConfigValue(path = "setting.language")
+    public String lang;
     @ConfigValue(path = "setting.broadCast")
     public boolean broadCast;
     @ConfigValue(path = "setting.enableHealth")
     public boolean enableHealth;
-    @ConfigValue(path = "setting.res.enable")
-    public boolean enableRes;
-    @ConfigValue(path = "setting.res.enabledWorlds")
-    public List<String> resEnabledWorlds;
+    @ConfigValue(path = "setting.enableAttack")
+    public boolean enableAttack;
+    @ConfigValue(path = "setting.defaultWorlds")
+    public List<String> defaultWorlds;
     @ConfigValue(path = "setting.levelProfile")
     public List<String> levelProfile;
     @ConfigSection(path = "setting.levels")
     public Map<String, Level> levelMap;
 
-    /**
-     * 是否可以升级到下一级
-     *
-     * @param nowLevel
-     * @param points
-     * @return
-     */
-    public boolean canLevelUp(String nowLevel, int points) {
-        Level level = levelMap.get(nowLevel);
-        return points > level.upgradePoints;
+    private List<Level> levels;
+
+    public List<Level> getLevelList() {
+        if (levels == null) {
+            levels = new ArrayList<>(levelMap.values());
+            Collections.sort(levels);
+        }
+        return levels;
+
     }
 
     /**
@@ -47,5 +50,15 @@ public class DefaultConfig {
      */
     public Level getLevelByName(String level) {
         return levelMap.get(level);
+    }
+
+    public Level getNextLevel(Level level) {
+        int next = getLevelList().indexOf(level) + 1;
+        return next >= getLevelList().size() ? level : getLevelList().get(next);
+    }
+
+    public Level getPreLevel(Level level) {
+        int pre = getLevelList().indexOf(level) - 1;
+        return pre < 0 ? level : getLevelList().get(pre);
     }
 }

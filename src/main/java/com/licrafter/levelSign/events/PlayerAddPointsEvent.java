@@ -14,7 +14,6 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerAddPointsEvent extends Event implements Cancellable {
 
-    private int buyCount;
     private OfflinePlayer player;
     private boolean cancel = false;
     private Level.Points points;
@@ -49,7 +48,7 @@ public class PlayerAddPointsEvent extends Event implements Cancellable {
     }
 
     public int getBuyCount() {
-        return buyCount;
+        return points.amount;
     }
 
     public OfflinePlayer getPlayer() {
